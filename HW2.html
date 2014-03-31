@@ -1,71 +1,5 @@
-<script>
-var HW = (function() {
+<script src="jschannel.js">
 
-    var width = 400, height = 400;
-    var container, renderer, scene, camera, projector,
-        ambientlight, directionalLight,
-        cylinder, cube, nonSelectedMaterial, selectedMaterial;
-    // Revolutions per second
-    var angularSpeed = 0.5, lastTime = 0;
-    var state = [];
-    state[0]='white';
-       
-
-    // Establish a channel only if this application is embedded in an iframe.
-    // This will let the parent window communicate with this application using
-    // RPC and bypass SOP restrictions.
-    if (window.parent !== window) {
-        channel = Channel.build({
-            window: window.parent,
-            origin: "*",
-            scope: "JSInput"
-        });
-
-        channel.bind("getGrade", getGrade);
-        channel.bind("getState", getState);
-        channel.bind("setState", setState);
-    }
-
-function init() {
-        container = document.getElementById('container');
-        // Renderer
-        // First check if WebGL is supported. If not, rely on the canvas
-        // render and use a scene with less triangles as it is slow.
-    }
-
-init();
-
-function getGrade() {
-    // The following return value may or may not be used to grade 
-    // server-side.
-    // If getState and setState are used, then the Python grader also gets
-    // access to the return value of getState and can choose it instead to
-    // grade.
-    return JSON.stringify(state);
-}
-
- function getState() {
-        return JSON.stringify(state);
-    }
-
-    // This function will be called with 1 argument when JSChannel is not used,
-    // 2 otherwise. In the latter case, the first argument is a transaction 
-    // object that will not be used here
-    // (see http://mozilla.github.io/jschannel/docs/)
-    function setState() {
-        stateStr = arguments.length === 1 ? arguments[0] : arguments[1];
-        state = JSON.parse(stateStr);
-        updateMaterials();
-    }
-
-    return {
-        getState: getState,
-        setState: setState,
-        getGrade: getGrade
-    };
-    }());
-
-</script>
 
 <h1>Automaton Generations Exercise (v1.3)</h1>
 
@@ -756,7 +690,7 @@ highlights.                                                                     
             calculatedValue = 0;
         }
         else {
-            var bit0_parentCellId = getGenerationMemberId(memberIndex-1, usersGenerationIndex-1);
+            var bit0_parentCellId = getGenerationMemberId(memberInde1, usersGenerationIndex-1);
             var bit1_parentCellId = getGenerationMemberId(memberIndex,   usersGenerationIndex-1);
             var bit2_parentCellId = getGenerationMemberId(memberIndex+1, usersGenerationIndex-1);
 
@@ -847,3 +781,67 @@ highlights.                                                                     
       font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     }
 </style>
+
+<script>
+var HW = (function() {
+
+    var channel;
+    var state = new Array();
+    state[0]='white';
+       
+
+ if (window.parent !== window) {
+        channel = Channel.build({
+            window: window.parent,
+            origin: "*",
+            scope: "JSInput"
+        });
+
+        channel.bind("getGrade", getGrade);
+        channel.bind("getState", getState);
+        channel.bind("setState", setState);
+    }
+
+function init() {
+        alert('init');
+        //container = document.getElementById('container');
+        // Renderer
+        // First check if WebGL is supported. If not, rely on the canvas
+        // render and use a scene with less triangles as it is slow.
+    }
+
+init();
+
+function getGrade() {
+    // The following return value may or may not be used to grade 
+    // server-side.
+    // If getState and setState are used, then the Python grader also gets
+    // access to the return value of getState and can choose it instead to
+    // grade.
+    alert('grade');
+    return JSON.stringify(state);
+}
+
+ function getState() {
+        return JSON.stringify(state);
+    }
+
+    // This function will be called with 1 argument when JSChannel is not used,
+    // 2 otherwise. In the latter case, the first argument is a transaction 
+    // object that will not be used here
+    // (see http://mozilla.github.io/jschannel/docs/)
+    function setState() {
+        alert('setState');
+        var stateStr = '';
+        state[0] = JSON.parse(stateStr);
+        
+    }
+
+    return {
+        getState: getState,
+        setState: setState,
+        getGrade: getGrade
+    };
+    }());
+
+</script>
