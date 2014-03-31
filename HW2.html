@@ -7,6 +7,73 @@
     <div id="container"></div>
     <script src="jschannel.js"></script>
 
+<script>
+var state = {
+                        'errors': 0,
+                        'completed': false
+                    };
+var HW = (function() {
+
+    var channel;
+    
+
+       
+
+ if (window.parent !== window) {
+        channel = Channel.build({
+            window: window.parent,
+            origin: "*",
+            scope: "JSInput"
+        });
+
+        channel.bind("getGrade", getGrade);
+        channel.bind("getState", getState);
+        channel.bind("setState", setState);
+    }
+
+function init() {
+        //alert('init');
+        //container = document.getElementById('container');
+        // Renderer
+        // First check if WebGL is supported. If not, rely on the canvas
+        // render and use a scene with less triangles as it is slow.
+    }
+
+init();
+
+function getGrade() {
+    // The following return value may or may not be used to grade 
+    // server-side.
+    // If getState and setState are used, then the Python grader also gets
+    // access to the return value of getState and can choose it instead to
+    // grade.
+    alert(JSON.stringify(state));
+    return JSON.stringify(state);
+}
+
+ function getState() {
+        return JSON.stringify(state);
+    }
+
+    // This function will be called with 1 argument when JSChannel is not used,
+    // 2 otherwise. In the latter case, the first argument is a transaction 
+    // object that will not be used here
+    // (see http://mozilla.github.io/jschannel/docs/)
+    function setState() {
+        //alert('setState');
+        var stateStr = '';
+        //state[0] = JSON.parse(stateStr);
+        
+    }
+
+    return {
+        getState: getState,
+        setState: setState,
+        getGrade: getGrade
+    };
+    }());
+
+</script>
 
 
 
@@ -572,6 +639,7 @@ highlights.                                                                     
         if(id.indexOf(usersGenerationPattern) != -1) {   // only allow the user to change cells on the active row
             setCell(id, !getCellState(id));
         }
+        state.completed = true;
     }
 
     //____________________________________________________________________________
@@ -791,69 +859,7 @@ highlights.                                                                     
     }
 </style>
 
-<script>
-var HW = (function() {
 
-    var channel;
-    var state = new Array();
-    state[0]='white';
-       
-
- if (window.parent !== window) {
-        channel = Channel.build({
-            window: window.parent,
-            origin: "*",
-            scope: "JSInput"
-        });
-
-        channel.bind("getGrade", getGrade);
-        channel.bind("getState", getState);
-        channel.bind("setState", setState);
-    }
-
-function init() {
-        //alert('init');
-        //container = document.getElementById('container');
-        // Renderer
-        // First check if WebGL is supported. If not, rely on the canvas
-        // render and use a scene with less triangles as it is slow.
-    }
-
-init();
-
-function getGrade() {
-    // The following return value may or may not be used to grade 
-    // server-side.
-    // If getState and setState are used, then the Python grader also gets
-    // access to the return value of getState and can choose it instead to
-    // grade.
-    alert(JSON.stringify(state));
-    return JSON.stringify(state);
-}
-
- function getState() {
-        return JSON.stringify(state);
-    }
-
-    // This function will be called with 1 argument when JSChannel is not used,
-    // 2 otherwise. In the latter case, the first argument is a transaction 
-    // object that will not be used here
-    // (see http://mozilla.github.io/jschannel/docs/)
-    function setState() {
-        //alert('setState');
-        var stateStr = '';
-        state[0] = JSON.parse(stateStr);
-        
-    }
-
-    return {
-        getState: getState,
-        setState: setState,
-        getGrade: getGrade
-    };
-    }());
-
-</script>
 
 </body>
 </html>
