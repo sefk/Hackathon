@@ -812,7 +812,7 @@ var HW = (function() {
     }
 
 function init() {
-        alert('init');
+        //alert('init');
         //container = document.getElementById('container');
         // Renderer
         // First check if WebGL is supported. If not, rely on the canvas
@@ -827,7 +827,7 @@ function getGrade() {
     // If getState and setState are used, then the Python grader also gets
     // access to the return value of getState and can choose it instead to
     // grade.
-    alert('grade');
+    alert(JSON.stringify(state));
     return JSON.stringify(state);
 }
 
@@ -840,7 +840,7 @@ function getGrade() {
     // object that will not be used here
     // (see http://mozilla.github.io/jschannel/docs/)
     function setState() {
-        alert('setState');
+        //alert('setState');
         var stateStr = '';
         state[0] = JSON.parse(stateStr);
         
